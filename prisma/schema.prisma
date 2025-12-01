@@ -1,0 +1,49 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Tenant {
+  id          String    @id @default(uuid())
+  shopName    String    @unique
+  accessToken String
+  customers   Customer[]
+  orders      Order[]
+  products    Product[]
+}
+
+model Customer {
+  id        String   @id @default(uuid())
+  tenantId  String
+  tenant    Tenant   @relation(fields: [tenantId], references: [id])
+  shopifyId String   @unique
+  email     String?
+  firstName String?
+  lastName  String?
+  orders    Order[]
+}
+
+model Order {
+  id         String    @id @default(uuid())
+  tenantId   String
+  tenant     Tenant    @relation(fields: [tenantId], references: [id])
+  shopifyId  String    @unique
+  customerId String
+  customer   Customer  @relation(fields: [customerId], references: [id])
+  totalPrice Float
+  createdAt  DateTime
+}
+
+model Product {
+  id        String   @id @default(uuid())
+  tenantId  String
+  tenant    Tenant   @relation(fields: [tenantId], references: [id])
+  shopifyId String   @unique
+  title     String
+  price     Float
+}
