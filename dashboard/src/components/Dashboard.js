@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import {
   Chart as ChartJS,
@@ -44,18 +44,14 @@ const Dashboard = () => {
     end: new Date().toISOString().split('T')[0]
   });
 
-  useEffect(() => {
-    fetchData();
-  }, [dateRange]);
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
     try {
       const [metricsRes, ordersRes, customersRes, productsRes] = await Promise.all([
-        axios.get(`http://localhost:3000/api/metrics?start=${dateRange.start}&end=${dateRange.end}`),
-        axios.get(`http://localhost:3000/api/orders?start=${dateRange.start}&end=${dateRange.end}`),
-        axios.get('http://localhost:3000/api/customers/top'),
-        axios.get('http://localhost:3000/api/products')
+        axios.get(`https://xenofide-backend-production.up.railway.app/api/metrics?start=${dateRange.start}&end=${dateRange.end}`),
+        axios.get(`https://xenofide-backend-production.up.railway.app/api/orders?start=${dateRange.start}&end=${dateRange.end}`),
+        axios.get('https://xenofide-backend-production.up.railway.app/api/customers/top'),
+        axios.get('https://xenofide-backend-production.up.railway.app/api/products')
       ]);
 
       setMetrics(metricsRes.data);
@@ -67,7 +63,11 @@ const Dashboard = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [dateRange]);
+
+  useEffect(() => {
+    fetchData();
+  }, [dateRange, fetchData]);
 
   const revenueChartData = {
     labels: orders.map(order => new Date(order.createdAt).toLocaleDateString()),

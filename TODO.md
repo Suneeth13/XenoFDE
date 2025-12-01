@@ -1,8 +1,18 @@
-# TODO: Send Shopify Data to Frontend Dashboard
+# Deployment Plan
 
-- [x] Modify the /api/orders endpoint in server.js to return filtered data from orders.json instead of the database
-- [x] Update Dashboard.js to fetch and display the raw data from customers.json and products.json in new table sections
-- [x] Add tables for customers (showing ID, Email, Total Spent, Orders Count) and products (showing ID, Title, Vendor, Price)
-- [x] Update fetchData function to fetch customers and products data
-- [x] Add state variables for customers and products data
-- [x] Verify dashboard displays data from all three JSON files
+## Backend Deployment (Railway)
+- [x] Add start script to package.json
+- [x] Install Railway CLI
+- [x] Login to Railway
+- [x] Deploy backend to Railway
+- [ ] Set up database if needed
+- [ ] Get public URL for backend
+
+## Frontend Deployment (Vercel)
+- [ ] Build the React app
+- [ ] Deploy frontend to Vercel
+- [ ] Update API URLs in frontend to point to deployed backend
+
+## Post-Deployment
+- [ ] Test the deployed application
+- [ ] Update environment variables
